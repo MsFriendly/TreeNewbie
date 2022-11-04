@@ -1,4 +1,4 @@
-# Object-Detection-ML-Project: TreeNewbie
+# Object Detection Machine Learning Project: TreeNewbie
 
 ## Setting up the GUI 
 
