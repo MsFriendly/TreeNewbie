@@ -1,6 +1,4 @@
-# TreeNewbie
-
-# INF-117-Object-Detection-ML-Project
+# Object-Detection-ML-Project: TreeNewbie
 
 ## Setting up the GUI 
 
