@@ -4,6 +4,7 @@ from tkinter import ttk
 import tkinter as tk
 from functools import partial
 import os 
+import shutil
 
 import api  
 
@@ -128,9 +129,7 @@ class GUI:
 
         localStrVar = self.stringVar.get()
 
-        lat, lon = api.get_center(localStrVar)
-        l = api.get_addrs_center(lat,lon)
-        api.get_images(l)
+        api.download_images(localStrVar)
 
         # stored list of addresses 
 
@@ -240,3 +239,5 @@ if __name__ == "__main__":
         os.mkdir('results')
 
     GUI()
+
+    shutil.rmtree('results')
