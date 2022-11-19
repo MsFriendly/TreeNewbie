@@ -3,6 +3,9 @@ from tkinter import *
 from tkinter import ttk
 import tkinter as tk
 from functools import partial
+import os 
+
+import api  
 
 
 FIT_WIDTH = "fit_width"
@@ -125,6 +128,15 @@ class GUI:
 
         localStrVar = self.stringVar.get()
 
+        lat, lon = api.get_center(localStrVar)
+        l = api.get_addrs_center(lat,lon)
+        api.get_images(l)
+
+        # stored list of addresses 
+
+        # address images in UI/result-images
+
+
         if localStrVar == "":
             tkinter.messagebox.showwarning(title="Zipcode cannot be empty", message="Zipcode cannot be empty")
             return 
@@ -223,4 +235,8 @@ class GUI:
 
 
 if __name__ == "__main__":
+    # makes a directory of images if the directory does not exist
+    if not os.path.exists("results"): 
+        os.mkdir('results')
+
     GUI()
