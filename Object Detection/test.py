@@ -2,6 +2,7 @@ from cgi import test
 
 from cv2 import threshold
 from mmdet.apis import init_detector, inference_detector, show_result_pyplot
+from mmdet.core import get_classes
 import mmcv
 import matplotlib.pyplot as plt
 import argparse
@@ -11,6 +12,7 @@ import cv2
 import json
 import torch
 import time
+import numpy as np
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
@@ -24,7 +26,7 @@ args = parser.parse_args()
 # CHANGE THESE PARAMETERS AS NEEDED
 # - Specify the path to model config and checkpoint file
 config_file = 'configs/ours/fasterRcnn.py'
-checkpoint_file = 'exps/exp1_F/latest.pth'
+checkpoint_file = 'exps/exp3_F/epoch_12.pth'
 # - Data sub-directory name
 subdir = '1027data'
 # - If tesing with video
@@ -41,7 +43,7 @@ model = init_detector(config_file, checkpoint_file, device=device)
 
 if args.type == "img":
     if args.name != "":
-        img = f'data/random/test/{args.name}'
+        img = f'data/{subdir}/test/{args.name}'
         result = inference_detector(model, img)
         show_result_pyplot(model, img, result, score_thr=0.6)
         model.show_result(img, result, out_file=f'{args.dir}/random/result{args.name}')

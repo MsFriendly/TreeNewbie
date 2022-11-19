@@ -5,7 +5,7 @@ _base_ = '../faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py'
 model = dict(
     rpn_head=dict(
         anchor_generator=dict(
-            scales = [4,6,8]
+            scales = [6,8,12]
         )
     ),
     roi_head=dict(
@@ -31,14 +31,14 @@ data = dict(
         ann_file=f'data/{subdir}/annotations/ember_test_dataset.json'))
 
 
-runner = dict(type='EpochBasedRunner', max_epochs=12) #default: 12
-evaluation = dict(interval=4, metric='bbox')
+runner = dict(type='EpochBasedRunner', max_epochs=24) #default: 12
+evaluation = dict(interval=6, metric='bbox')
 optimizer = dict(type='SGD', lr=0.0025, momentum=0.9, weight_decay=0.0001)
 
-checkpoint_config = dict(interval=4) #, by_epoch=False
+checkpoint_config = dict(interval=12) #, by_epoch=False
 
 load_from = 'checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth'
-experiment = 'exp1_F' # change accordingly
+experiment = 'exp3_F' # change accordingly
 if not os.path.exists(f'./exps/{experiment}'):
     os.mkdir(f'./exps/{experiment}')
 work_dir = f'./exps/{experiment}'
