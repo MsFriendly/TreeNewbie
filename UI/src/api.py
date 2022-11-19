@@ -23,9 +23,8 @@ def get_images(addr_list: list):
                                  'size': '640x640',
                                  'maptype': 'satellite',
                                  'key': API_KEY})
-
-        with open(f'results/{addr}.png', 'wb') as f:
-            addr = addr_list[i].replace("+", "_")
+        addr_sc = addr.replace('+','_')
+        with open(f'results/{addr_sc}.png', 'wb') as f:
             f.write(x.content)
 
         i += 1
@@ -63,7 +62,7 @@ def get_addrs_area(areaid: int = 3610840804):
         with open(f'results/addr_list.txt', 'w') as f:
             f.write(str(areaid)+'\n')
             f.write(str(len(addr_list))+'\n')
-            f.write('\n'.join([i for i in addr_list]))
+            f.write('\n'.join([i for i in addr_list]).replace('+','_'))
     else:
         with open('results/addr_list.txt', 'r') as f:
             addr_list = f.read().split('\n')[2:]
@@ -137,16 +136,16 @@ def get_center(zipcode:str) -> tuple:
     return lat, lon
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
 #     # print_hi('PyCharm')
 #     # l = ['2500', '2504', '2510', '2514', '2518', '2522', '2526', '2530', '2600', '2606']
 #     # get_images(l)
-#     zipcode = input("Query: ")
+    zipcode = input("Query: ")
 #     # areaid = get_area(zipcode)
 #     # print(areaid+3600000000)
-#     # l = get_addrs_area(areaid+3600000000)#areaid+3600000000)
+    # l = get_addrs_area(areaid+3600000000)#areaid+3600000000)
 
-#     lat, lon = get_center(zipcode)
-#     l = get_addrs_center(lat,lon)
+    lat, lon = get_center(zipcode)
+    l = get_addrs_center(lat,lon)
 #     # print(l)
 #     get_images(l)
