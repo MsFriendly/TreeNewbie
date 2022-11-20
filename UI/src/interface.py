@@ -5,9 +5,15 @@ import tkinter as tk
 from functools import partial
 import os 
 import shutil
+import sys
+
+# currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+# parentdir = os.path.dirname(os.getcwd())
+print(os.getcwd())
+sys.path.insert(0, os.getcwd()) 
 
 import api  
-
+from ObjectDetection import predict
 
 FIT_WIDTH = "fit_width"
 FIT_HEIGHT = "fit_height"
@@ -131,10 +137,9 @@ class GUI:
 
         api.download_images(localStrVar)
 
-        # stored list of addresses 
-
-        # address images in UI/result-images
-
+        # stored list of addresses & save images in UI/result-images
+        addres = predict.predict() #[{address:maxOverlap}]
+        print(addres)
 
         if localStrVar == "":
             tkinter.messagebox.showwarning(title="Zipcode cannot be empty", message="Zipcode cannot be empty")
@@ -237,9 +242,7 @@ if __name__ == "__main__":
     # makes a directory of images if the directory does not exist
     if not os.path.exists("results"): 
         os.mkdir('results')
-    else:
-        for f in os.listdir("results"):
-            os.remove(f'results/{f}')
+
     GUI()
 
     shutil.rmtree('results')

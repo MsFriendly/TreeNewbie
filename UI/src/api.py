@@ -59,11 +59,11 @@ def get_addrs(lat,lon):
         except KeyError:
             continue
     
-    if DEBUG:
-        with open(f'results/addr_list.txt', 'w') as f:
-            f.write(str(lat)+","+str(lon)+'\n')
-            f.write(str(len(addr_list))+'\n')
-            f.write('\n'.join([i for i in addr_list]))
+    # if DEBUG:
+    #     with open(f'results/addr_list.txt', 'w') as f:
+    #         f.write(str(lat)+","+str(lon)+'\n')
+    #         f.write(str(len(addr_list))+'\n')
+    #         f.write('\n'.join([i for i in addr_list]))
     
     return addr_list
 
