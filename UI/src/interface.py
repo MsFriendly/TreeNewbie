@@ -238,5 +238,7 @@ if __name__ == "__main__":
     # makes a directory of images if the directory does not exist
     if not os.path.exists("results"): 
         os.mkdir('results')
-
+    else:
+        for f in os.listdir("results"):
+            os.remove(f'results/{f}')
     GUI()
