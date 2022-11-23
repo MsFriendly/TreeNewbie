@@ -74,6 +74,7 @@ class api:
         datalist = json.loads(x.content)['elements']
         if len(datalist) == 0:
             return NoMatchException
+            
         for i in datalist:
             try:
                 numberstr = i['tags']['addr:housenumber']
