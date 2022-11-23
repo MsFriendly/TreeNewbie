@@ -3,7 +3,7 @@ import urllib.parse
 import requests
 
 #Debug Mode: a txt file will be created for debugging
-DEBUG = True
+DEBUG = False
 
 class NoContentException(Exception):
     pass
