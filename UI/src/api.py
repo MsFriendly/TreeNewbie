@@ -5,7 +5,7 @@ import requests
 #Set you Google Map Static API key here. 
 API_KEY = 'AIzaSyAV5sMuLbN9Gn0uuLLcDRoy26bwq75qkpA'
 #Set the radius of your searching range. (meters)
-RANGE = 200
+RANGE = 500
 #Debug Mode: a txt file will be created for debugging
 DEBUG = True
 
@@ -75,7 +75,14 @@ def get_center(zipcode:str) -> tuple:
     return lat, lon
 
 
+def set_range(range: str):
+    RANGE = int(range)
+
+
 # if __name__ == '__main__':
+
+#     set_range(500)
+#     print(RANGE, type(RANGE))
 
     # query = input("Query: ")
     # download_images(query)

@@ -135,6 +135,9 @@ class GUI:
 
         localStrVar = self.stringVar.get()
 
+        ###pass value in
+        # api.set_range()
+        
         api.download_images(localStrVar)
 
         # stored list of addresses & save images in UI/result-images
