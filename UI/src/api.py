@@ -3,14 +3,25 @@ import urllib.parse
 import requests
 
 #Debug Mode: a txt file will be created for debugging
-DEBUG = False
+DEBUG = True
+
+class NoContentException(Exception):
+    pass
+
+class APIException(Exception):
+    pass
+
+class NoMatchException(Exception):
+    pass
 
 class api:
 
     def __init__(self, range = 500) -> None:
         
         #Set you Google Map Static API key here. 
-        self._api_key = 'AIzaSyAV5sMuLbN9Gn0uuLLcDRoy26bwq75qkpA'
+        # 'AIzaSyAV5sMuLbN9Gn0uuLLcDRoy26bwq75qkpA'
+        with open('api.txt','r') as f:
+            self._api_key = f.readline()
         #Set the radius of your searching range. (meters)
         self._range = range
         
@@ -33,11 +44,19 @@ class api:
                                     'maptype': 'satellite',
                                     'key': self._api_key})
 
+            # print(x.ok, x.status_code)
+            if not x.ok:
+                raise APIException
+
             addr_sc = addr.replace('+','_')
             with open(f'results/{addr_sc}.png', 'wb') as f:
                 f.write(x.content)
 
             i += 1
+
+            if DEBUG:
+                if i == 30:
+                    break
 
 
     def get_addrs(self,lat,lon):
@@ -53,6 +72,8 @@ class api:
                                     )
         x = requests.get(http+query);
         datalist = json.loads(x.content)['elements']
+        if len(datalist) == 0:
+            return NoMatchException
         for i in datalist:
             try:
                 numberstr = i['tags']['addr:housenumber']
@@ -76,20 +97,19 @@ class api:
 
     def get_center(self, zipcode:str) -> tuple:
         x = requests.get(f'https://nominatim.openstreetmap.org/search?q={urllib.parse.quote_plus(zipcode)}&format=json&countrycodes=us')
+        if len(json.loads(x.content)) == 0:
+            raise NoContentException
         lat, lon = json.loads(x.content)[0]['lat'], json.loads(x.content)[0]['lon']
         print(lat,lon)
         return lat, lon
 
 
-    def set_range(self, r: str):
-        self._range = int(r)
-
 
 # if __name__ == '__main__':
 
-    # api = api()
-    # api.set_range(300)
-    # print(api._range, type(api._range))
+#     api = api()
+#     # api.set_range(300)
+#     # print(api._range, type(api._range))
 
-    # query = input("Query: ")
-    # download_images(query)
+#     query = input("Query: ")
+#     api.download_images(query)
