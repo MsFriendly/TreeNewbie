@@ -9,11 +9,11 @@ import sys
 
 # currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 # parentdir = os.path.dirname(os.getcwd())
-print(os.getcwd())
+# print(os.getcwd())
 sys.path.insert(0, os.getcwd()) 
 
 from api import api as API
-# from ObjectDetection import predict
+from ObjectDetection import predict
 
 FIT_WIDTH = "fit_width"
 FIT_HEIGHT = "fit_height"
@@ -115,21 +115,28 @@ class GUI:
         self.stringVar = StringVar()
         self.userInput = Entry(textvariable=self.stringVar, font=("Inter", 20), justify="center")
         self.userInput.insert(0, "Enter Zip Code")
-        self.userInput.bind("<FocusIn>", self.removeEnterAddress)
+        #self.userInput.bind("<FocusIn>", self.removeEnterAddress)
         homeCanvas.create_window(460, 400, anchor="nw", window=self.userInput, width=200)
         
-        searchButton = Button(self.homeWindow, text="Search", command=self.resultPageWindow)
-        self.homeWindow.bind("<Return>", self.resultPageWindow)
-        homeCanvas.create_window(540, 440, anchor="nw", window=searchButton)
+        # range
+        self.stringVar2 = StringVar()
+        self.userInput2 = Entry(textvariable=self.stringVar2, font=("Inter", 20), justify="center")
+        self.userInput2.insert(0, "Enter Range (default 500)")
+        #self.userInput2.bind("<FocusIn>", self.removeEnterAddress)
+        homeCanvas.create_window(460, 450, anchor="nw", window=self.userInput2, width=300)
+
+        searchButton = Button(self.homeWindow, text="Search", command=self.getResults)
+        self.homeWindow.bind("<Return>", self.getResults)
+        homeCanvas.create_window(540, 510, anchor="nw", window=searchButton)
 
         self.homeWindow.mainloop()
- 
 
-    def resultPageWindow(self):
+
+    def getResults(self):
         """
-        This function will display the result window  
+        This function will get the results from user input and display a loading page
         """
-        try: 
+        try:
             self.homeWindow.destroy()
         except:
             pass 
@@ -137,7 +144,7 @@ class GUI:
         localStrVar = self.stringVar.get()
 
         a = API()
-        a.download_images(localStrVar)
+        # a.download_images(localStrVar)
 
         # stored list of addresses & save images in UI/result-images
         # addres = predict.predict() #[{address:maxOverlap}]
@@ -146,8 +153,38 @@ class GUI:
 
         if localStrVar == "":
             tkinter.messagebox.showwarning(title="Zipcode cannot be empty", message="Zipcode cannot be empty")
-            return 
+            return
+        
+        #if localStrVar2 != "":
+        #    if localStrVar2.isnumeric():
+        #        api.set_range(localStrVar2)
 
+    
+        try:
+            a.download_images(localStrVar)
+        except: 
+            pass
+
+        # stored list of addresses & save images in UI/result-images
+        listOfAddressesAsDictionaryKeyPair = predict.predict() # [{address : maxOverlap}]
+        
+        self.listOfAddresses = []
+        for dictionary in listOfAddressesAsDictionaryKeyPair:
+            for key in dictionary.keys():
+                self.listOfAddresses.append(key.replace(" ", "_"))
+
+        self.resultPageWindow()
+
+
+    def resultPageWindow(self):   
+        """
+        This function will display the result window
+        """ 
+        try:
+            self.homeWindow.destroy()
+        except:
+            pass 
+        
         self.resultWindow = Tk()
         self.resultWindow.geometry("1100x700")
         self.resultWindow.resizable(False, False)
@@ -155,8 +192,8 @@ class GUI:
 
         resultFrame = ScrollableFrame(self.resultWindow, width=self.resultWindow.winfo_screenwidth(), height=self.resultWindow.winfo_screenheight(), vscroll=True)
         resultFrame.pack()
-
-        homeButtonImage = PhotoImage(file="UI/GUI-images/homeButton.png")
+        
+        homeButtonImage = PhotoImage(file="UI/GUI-images/homeButton.png", master=self.resultWindow)
         homeButtonImage = homeButtonImage.zoom(25)
         homeButtonImage = homeButtonImage.subsample(35)
         homeButton = Button(resultFrame, image=homeButtonImage, height=55, width=60, command=self.returnToHomePageWindow)
@@ -166,15 +203,15 @@ class GUI:
         title = ttk.Label(resultFrame, text="Addresses with the Most Concentrated Data Points", font=("Inter", 25, "bold", "italic"), justify="center")
         title.grid(column=1, row=0, padx=(80, 10))
 
-        eyeButtonImage = PhotoImage(file="UI/GUI-images/eyeButton.png")
+        eyeButtonImage = PhotoImage(file="UI/GUI-images/eyeButton.png", master=self.resultWindow)
         
         r = 1
-        for i in range(40):
+        for i in range(len(self.listOfAddresses)):
             index = Label(resultFrame, text=i+1, font=("Inter", 15), justify="center")
             index.grid(column=0, row=r)
-            addressText = Label(resultFrame, text=localStrVar, font=("Inter", 15), justify="center")
+            addressText = Label(resultFrame, text=self.listOfAddresses[i].replace("_", " "), font=("Inter", 15), justify="center")
             addressText.grid(column=1, row=r, sticky=W, ipady=30, padx=(120, 10))
-            eyeButton1 = Button(resultFrame, image=eyeButtonImage, height=40, width=60, command=partial(self.imagePageWindow, "testAddress"))
+            eyeButton1 = Button(resultFrame, image=eyeButtonImage, height=40, width=60, command=partial(self.imagePageWindow, self.listOfAddresses[i]))
             eyeButton1.image = eyeButtonImage
             eyeButton1.grid(column=1, row=r, sticky=E, padx=(10, 80))
             r += 1
@@ -206,7 +243,7 @@ class GUI:
         returnButton.pack()
         imageCanvas.create_window(0, 0, anchor="nw", window=returnButton)
 
-        addressImage = PhotoImage(file="UI/result-images/testAddress.png")
+        addressImage = PhotoImage(file="UI/result-images/" + address + ".png")
         addressImageLabel = Label(self.imageWindow, image = addressImage)
         imageCanvas.create_window(250, 0, anchor="nw", window=addressImageLabel)
 
