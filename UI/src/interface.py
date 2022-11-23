@@ -9,14 +9,15 @@ import sys
 
 # currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 # parentdir = os.path.dirname(os.getcwd())
-print(os.getcwd())
+# print(os.getcwd())
 sys.path.insert(0, os.getcwd()) 
 
-import api  
+from api import api as API
 from ObjectDetection import predict
 
 FIT_WIDTH = "fit_width"
 FIT_HEIGHT = "fit_height"
+
 
 class ScrollableFrame(tk.Frame):
     def __init__(self, master=None, scroll_speed=2,  hscroll=False, vscroll=True, **kwargs):
@@ -141,7 +142,14 @@ class GUI:
             pass 
 
         localStrVar = self.stringVar.get()
-        localStrVar2 = self.stringVar2.get()
+
+        a = API()
+        # a.download_images(localStrVar)
+
+        # stored list of addresses & save images in UI/result-images
+        # addres = predict.predict() #[{address:maxOverlap}]
+        addres = ['123','123']
+        print(addres)
 
         if localStrVar == "":
             tkinter.messagebox.showwarning(title="Zipcode cannot be empty", message="Zipcode cannot be empty")
@@ -153,9 +161,7 @@ class GUI:
 
     
         try:
-            print(localStrVar2)
-            api.set_range(localStrVar2)
-            api.download_images(localStrVar)
+            a.download_images(localStrVar)
         except: 
             pass
 

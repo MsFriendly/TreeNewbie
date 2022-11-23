@@ -1,5 +1,6 @@
 *.pth
 checkpoints/
 *.DS_Store
-
+results
 results/
+.idea

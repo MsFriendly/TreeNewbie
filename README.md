@@ -12,6 +12,15 @@
 pip install tk
 ```
 
+## Setting up the API 
+
+- The Google Map Static Api need an API key before using it.
+
+- Set it up here: https://developers.google.com/maps/documentation/maps-static/get-api-key
+
+- After getting the key, put it into the api.txt file.
+
+
 ## Contributions
 
 - Hanxiao Chai
