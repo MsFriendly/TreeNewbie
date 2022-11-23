@@ -38,8 +38,8 @@ optimizer = dict(type='SGD', lr=0.0025, momentum=0.9, weight_decay=0.0001)
 checkpoint_config = dict(interval=4) #, by_epoch=False
 
 load_from = 'checkpoints/faster_rcnn_r50_fpn_1x_coco_20200130-047c8118.pth'
-experiment = 'exp1_F' # change accordingly
-if not os.path.exists(f'./exps/{experiment}'):
-    os.mkdir(f'./exps/{experiment}')
-work_dir = f'./exps/{experiment}'
+
+if not os.path.exists(f'./ObjectDetection/exps/inference'):
+    os.mkdir(f'./ObjectDetection/exps/inference')
+work_dir = f'./ObjectDetection/exps/inference'
 gpu_ids = [1]
