@@ -131,6 +131,8 @@ class GUI:
         """
         This function will display the result window  
         """
+        
+        
         try: 
             self.homeWindow.destroy()
         except:
@@ -140,24 +142,31 @@ class GUI:
 
         a = API()
         
-        try:
-            a.download_images(localStrVar)
-        except:
-            messagebox.showerror('Error', 'Please input valid zip code!')
-            self.homePageWindow()
-            # self.returnToHomePageWindow()
-        
 
         # stored list of addresses & save images in UI/result-images
         # addres = predict.predict() #[{address:maxOverlap}]
         addres = ['123','123']
-        print(addres)
+        # print(addres)
 
         if localStrVar == "":
             tkinter.messagebox.showwarning(title="Zipcode cannot be empty", message="Zipcode cannot be empty")
             return 
 
         self.resultWindow = Tk()
+        
+        # exception condition not adequate
+        try:
+            print("Loading...")
+            a.download_images(localStrVar)
+            print("Finish")
+
+
+        except:
+            self.resultWindow.destroy()
+            messagebox.showerror('Error', 'Please input valid zip code!')
+            self.homePageWindow()
+        
+        
         self.resultWindow.geometry("1100x700")
         self.resultWindow.resizable(False, False)
         self.resultWindow.title("List of All Addresses")
@@ -171,7 +180,7 @@ class GUI:
         homeButton = Button(resultFrame, image=homeButtonImage, height=55, width=60, command=self.returnToHomePageWindow)
         homeButton.image = homeButtonImage
         homeButton.grid(column=0, row=0, sticky=W)
-
+        
         title = ttk.Label(resultFrame, text="Addresses with the Most Concentrated Data Points", font=("Inter", 25, "bold", "italic"), justify="center")
         title.grid(column=1, row=0, padx=(80, 10))
 
