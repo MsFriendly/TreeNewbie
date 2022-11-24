@@ -152,14 +152,13 @@ class GUI:
             tkinter.messagebox.showwarning(title="Zipcode cannot be empty", message="Zipcode cannot be empty")
             return 
 
+        messagebox.showinfo(title="Loading", message="Loading...")
         self.resultWindow = Tk()
-        
         # exception condition not adequate
         try:
             print("Loading...")
             a.download_images(localStrVar)
             print("Finish")
-
 
         except:
             self.resultWindow.destroy()
