@@ -6,11 +6,8 @@
 
 - In terminal, navigate to TreeNewbie folder. Type `conda env create -f env.yml`. 
 
-- Then `conda activate treeNewbie
+- Then `conda activate treeNewbie`
 
-```
-pip install tk
-```
 
 ## Setting up the API 
 
@@ -20,8 +17,12 @@ pip install tk
 
 - After getting the key, put it into the api.txt file.
 
+## Run
+- To run the program: `python UI/src/interface.py`
+- Enter zip code/neighborhood in a residential area.
 
-## Contributions
+
+## Team 
 
 - Hanxiao Chai
 - Zhang Chi
