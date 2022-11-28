@@ -23,8 +23,8 @@ args = parser.parse_args()
 
 # CHANGE THESE PARAMETERS AS NEEDED
 # - Specify the path to model config and checkpoint file
-config_file = 'configs/ours/fasterRcnn.py'
-checkpoint_file = 'exps/exp1_F/latest.pth'
+config_file = 'configs/ours/modelConfig.py'
+checkpoint_file = 'exps/exp3_F/epoch_24.pth'
 # - Data sub-directory name
 subdir = '1027data'
 # - If tesing with video

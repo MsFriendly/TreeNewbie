@@ -1,12 +1,12 @@
 # Object Detection Machine Learning Project: TreeNewbie
 
-## Setting up the GUI 
+## Setting up the environment 
 
-- Download Python (https://www.python.org/downloads/)
+- Download [Conda](https://www.anaconda.com/products/distribution)
 
-- Add Python to PATH 
+- In terminal, navigate to TreeNewbie folder. Type `conda env create -f env.yml`. 
 
-- Install Tkinter 
+- Then `conda activate treeNewbie
 
 ```
 pip install tk
